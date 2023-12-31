@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package format="2">
   <name>kuka_lbr_iiwa_support</name>
   <version>0.1.0</version>
   <description>
@@ -12,9 +12,9 @@
     </p>
     <p>
       Joint limits and max joint velocities are based on the information in
-      the KUKA <a href="http://www.kuka-robotics.com/res/sps/e6c77545-9030-49b1-93f5-4d17c92173aa_Spez_LBR_iiwa_en.pdf">data sheets</a> online. 
-      All urdf's / xacro's are based on the default motion and joint velocity 
-      limits, unless noted otherwise (ie: no support for high speed joints, 
+      the KUKA <a href="http://www.kuka-robotics.com/res/sps/e6c77545-9030-49b1-93f5-4d17c92173aa_Spez_LBR_iiwa_en.pdf">data sheets</a> online.
+      All urdf's / xacro's are based on the default motion and joint velocity
+      limits, unless noted otherwise (ie: no support for high speed joints,
       extended / limited motion ranges or other options).
     </p>
     <p>
@@ -25,22 +25,23 @@
   </description>
   <author>Levi Armstrong (Southwest Research Institute)</author>
   <maintainer email="levi.armstrong@swri.org">Levi Armstrong (Southwest Research Institute)</maintainer>
+  <maintainer email="g.a.vanderhoorn@tudelft.nl">G.A. vd. Hoorn (TU Delft Robotics Institute)</maintainer>
 
   <license>Apache 2.0</license>
 
-  <url type="website">http://ros.org/wiki/kuka_lbr_iiwa_support</url>
+  <url type="website">http://wiki.ros.org/kuka_lbr_iiwa_support</url>
   <url type="bugtracker">https://github.com/ros-industrial/kuka_experimental/issues</url>
   <url type="repository">https://github.com/ros-industrial/kuka_experimental</url>
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <build_depend>roslaunch</build_depend>
+  <test_depend>roslaunch</test_depend>
 
-  <run_depend>industrial_robot_client</run_depend>
-  <run_depend>joint_state_publisher</run_depend>
-  <run_depend>robot_state_publisher</run_depend>
-  <run_depend>rviz</run_depend>
-  <run_depend>xacro</run_depend>
+  <exec_depend>industrial_robot_client</exec_depend>
+  <exec_depend>joint_state_publisher</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>rviz</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <export>
     <architecture_independent/>
