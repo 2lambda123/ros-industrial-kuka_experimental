@@ -41,20 +41,19 @@
 #define KUKA_RSI_HARDWARE_INTERFACE_KUKA_HARDWARE_INTERFACE_
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // ROS
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 
-
 // ros_control
-#include <realtime_tools/realtime_publisher.h>
 #include <controller_manager/controller_manager.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+#include <realtime_tools/realtime_publisher.h>
 
 // Timers
 #include <chrono>
@@ -63,70 +62,66 @@
 #include <kuka_rsi_hw_interface/udp_server.h>
 
 // RSI
-#include <kuka_rsi_hw_interface/rsi_state.h>
 #include <kuka_rsi_hw_interface/rsi_command.h>
+#include <kuka_rsi_hw_interface/rsi_state.h>
 
-namespace kuka_rsi_hw_interface
-{
+namespace kuka_rsi_hw_interface {
 
 static const double RAD2DEG = 57.295779513082323;
 static const double DEG2RAD = 0.017453292519943295;
 
-class KukaHardwareInterface : public hardware_interface::RobotHW
-{
+class KukaHardwareInterface : public hardware_interface::RobotHW {
 
 private:
+  // ROS node handle
+  ros::NodeHandle nh_;
 
-    // ROS node handle
-    ros::NodeHandle nh_;
+  unsigned int n_dof_;
 
-    unsigned int n_dof_;
+  std::vector<std::string> joint_names_;
 
-    std::vector<std::string> joint_names_;
+  std::vector<double> joint_position_;
+  std::vector<double> joint_velocity_;
+  std::vector<double> joint_effort_;
+  std::vector<double> joint_position_command_;
+  std::vector<double> joint_velocity_command_;
+  std::vector<double> joint_effort_command_;
 
-    std::vector<double> joint_position_;
-    std::vector<double> joint_velocity_;
-    std::vector<double> joint_effort_;
-    std::vector<double> joint_position_command_;
-    std::vector<double> joint_velocity_command_;
-    std::vector<double> joint_effort_command_;
+  // RSI
+  RSIState rsi_state_;
+  RSICommand rsi_command_;
+  std::vector<double> rsi_initial_joint_positions_;
+  std::vector<double> rsi_joint_position_corrections_;
+  unsigned long long ipoc_;
 
-    // RSI
-    RSIState rsi_state_;
-    RSICommand rsi_command_;
-    std::vector<double> rsi_initial_joint_positions_;
-    std::vector<double> rsi_joint_position_corrections_;
-    unsigned long long ipoc_;
+  std::unique_ptr<realtime_tools::RealtimePublisher<std_msgs::String>>
+      rt_rsi_pub_;
 
-    std::unique_ptr<realtime_tools::RealtimePublisher<std_msgs::String> > rt_rsi_pub_;
+  std::unique_ptr<UDPServer> server_;
+  std::string local_host_;
+  int local_port_;
+  std::string remote_host_;
+  std::string remote_port_;
+  std::string in_buffer_;
+  std::string out_buffer_;
 
-    std::unique_ptr<UDPServer> server_;
-    std::string local_host_;
-    int local_port_;
-    std::string remote_host_;
-    std::string remote_port_;
-    std::string in_buffer_;
-    std::string out_buffer_;
+  // Timing
+  ros::Duration control_period_;
+  ros::Duration elapsed_time_;
+  double loop_hz_;
 
-    // Timing
-    ros::Duration control_period_;
-    ros::Duration elapsed_time_;
-    double loop_hz_;
-
-    // Interfaces
-    hardware_interface::JointStateInterface joint_state_interface_;
-    hardware_interface::PositionJointInterface position_joint_interface_;
+  // Interfaces
+  hardware_interface::JointStateInterface joint_state_interface_;
+  hardware_interface::PositionJointInterface position_joint_interface_;
 
 public:
+  KukaHardwareInterface();
+  ~KukaHardwareInterface();
 
-    KukaHardwareInterface();
-    ~KukaHardwareInterface();
-
-    void start();
-    void configure();
-    bool read(const ros::Time time, const ros::Duration period);
-    bool write(const ros::Time time, const ros::Duration period);
-
+  void start();
+  void configure();
+  bool read(const ros::Time time, const ros::Duration period);
+  bool write(const ros::Time time, const ros::Duration period);
 };
 
 } // namespace kuka_rsi_hw_interface
