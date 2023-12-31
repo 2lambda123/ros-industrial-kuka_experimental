@@ -5,7 +5,7 @@ This guide highlights the steps needed in order to successfully configure the **
 ## 1. Controller network configuration
 
 Controller setup is described in chapter 4 of the **KUKA.Ethernet RSI XML 1.1** manual.
-**KUKA.RobotSensorInterface** package must be installed. Depending on the version of the **KUKA.RobotSensorInterface** package you might also need the **KUKA.Ethernet RSI XML**. This can be verified in the *InstallTech* window (`Setup -> 9 Install additional Software` on the KCP).
+**KUKA.RobotSensorInterface** package must be installed. Depending on the version of the **KUKA.RobotSensorInterface** package you might also need the **KUKA.Ethernet RSI XML**. This can be verified in the _InstallTech_ window (`Setup -> 9 Install additional Software` on the KCP).
 
 Make sure not to use the `192.0.1.x` IP range for the controller or PC.
 
@@ -15,7 +15,6 @@ From the Ethernet RSI XML manual:
 > Configuring the VxWorks network connection with this address range results in a system error in the KUKA system software. It is no longer possible to boot the robot controller.
 
 Ping the controller from the PC with ROS to make sure the network configuration is working.
-
 
 ## 2. KRL Files
 
@@ -27,7 +26,6 @@ The files included in this folder specifies the data transferred via RSI. Some o
 2. Keep the `PORT` tag as it is (49152) or change it if you want to use another port.
 
 Note that the `rsi/listen_address` and `rsi/listen_port` parameters of the `kuka_rsi_hw_interface` must correspond to the `IP_NUMBER`and `PORT` set in these KRL files.
-
 
 ##### ros_rsi.src
 
@@ -44,8 +42,8 @@ Note: You must reload KSS or reboot the controller if `ros_rsi.src` is not creat
 
 The **kuka_rsi_hardware_interface** needs to be configured in order to successfully communicate with RSI. Inside `/kuka_rsi_hw_interface/test` and `/kuka_rsi_hw_interface/config` in this repository is a set of `*.yaml` files. These configuration files may be loaded into a launch-file used to start the **kuka_rsi_hardware_interface** with correct parameters, such as:
 
-* **Joint names** corresponding to the robot description (URDF or .xacro).
-* **IP address** and **port** corresponding to the RSI setup specified in **ros_rsi_ethernet.xml**.
+- **Joint names** corresponding to the robot description (URDF or .xacro).
+- **IP address** and **port** corresponding to the RSI setup specified in **ros_rsi_ethernet.xml**.
 
 We recommend that you copy the configuration files, edit the copies for your needs and use these files to create your own launch file. A template will be provided at a later time. However, at this time, have a look at `test_hardware_interface.launch`, `test_params.yaml`, `controller_joint_names.yaml` and `hardware_controllers.yaml` to achieve a working test-launch.
 
@@ -61,18 +59,18 @@ Make sure that the line is added before the `kuka_hardware_interface` itself is 
 
 At this point you are ready to test the RSI interface. Before the test, make sure that:
 
-* You have specified the `rsi/listen_address` and `rsi/listen_port` of the **kuka_rsi_hardware_interface** to correspond with the KRL files on the controller.
-* You have a launch-file loading the network parameters, robot description, kuka_hardware_interface, hardware controller and controller joint names.
+- You have specified the `rsi/listen_address` and `rsi/listen_port` of the **kuka_rsi_hardware_interface** to correspond with the KRL files on the controller.
+- You have a launch-file loading the network parameters, robot description, kuka_hardware_interface, hardware controller and controller joint names.
 
 The next steps describe how to launch the test file:
 
-* In a new terminal:
+- In a new terminal:
 
 ```
 $ roscore
 ```
 
-* Open a new terminal and roslaunch the previously configured launch-file:
+- Open a new terminal and roslaunch the previously configured launch-file:
 
 ```
 $ roslaunch kuka_rsi_hw_interface test_hardware_interface.launch sim:=false
@@ -83,7 +81,7 @@ The **kuka_rsi_hardware_interface** is now waiting for the robot controller to c
 1. On the teach pad, enter mode **T1** for testing purposes.
 2. Navigate to `KRC:\R1\Program` and select `ros_rsi.src`.
 3. Press and hold an enabling switch and the run/play-button. The robot will first move to the start position.
-   * A message like **Programmed path reached (BCO)** will be shown at the teach pad.
+   - A message like **Programmed path reached (BCO)** will be shown at the teach pad.
 4. Press and hold again. The teach pad will post a warning **!!!Attention –RSI sensor mode active!!!**.
 5. Confirm the warning and press and hold the buttons again. This time the terminal where **kuka_rsi_hardware_interface** is running should output **Got connection from robot**. The RSI connection is now up and running.
 6. In a new terminal:
@@ -94,14 +92,13 @@ $ rosrun rqt_joint_trajectory_controller rqt_joint_trajectory_controller
 
 Choose **controller manager ns** and **controller** and you should be able to move each robot joint.
 
-* Note that T1-mode limits the robot movement velocity and is intended for testing purposes.
+- Note that T1-mode limits the robot movement velocity and is intended for testing purposes.
 
 ## 5. Troubleshooting
 
 ### RSI: Error in function <ST_ETHERNET>
 
 Problems establishing connection between robot or PC. Check IP, port and that the **kuka_rsi_hardware_interface** is running on the PC. May also come from malformed XML in `ros_rsi_ethernet.xml`.
-
 
 ### SEN: RSI execution error <execute> - RSI stopped
 
@@ -111,5 +108,5 @@ Most likely due to late packages. From the Ethernet RSI XML manual:
 
 If you have problems with the connection to RSI shutting down now and then while moving the robot it is suggested to:
 
-* Compile and install a [RT-Preempt](https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO) kernel for your PC.
-* Give **kuka_rsi_hardware_interface** on your PC real-time priority when the RSI connection is established.
+- Compile and install a [RT-Preempt](https://rt.wiki.kernel.org/index.php/RT_PREEMPT_HOWTO) kernel for your PC.
+- Give **kuka_rsi_hardware_interface** on your PC real-time priority when the RSI connection is established.
