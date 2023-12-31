@@ -41,20 +41,19 @@
 #define KUKA_RSI_HARDWARE_INTERFACE_KUKA_HARDWARE_INTERFACE_
 
 // STL
-#include <vector>
 #include <string>
+#include <vector>
 
 // ROS
 #include <ros/ros.h>
 #include <std_msgs/String.h>
 
-
 // ros_control
-#include <realtime_tools/realtime_publisher.h>
 #include <controller_manager/controller_manager.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+#include <realtime_tools/realtime_publisher.h>
 
 // Timers
 #include <chrono>
@@ -63,20 +62,17 @@
 #include <kuka_rsi_hw_interface/udp_server.h>
 
 // RSI
-#include <kuka_rsi_hw_interface/rsi_state.h>
 #include <kuka_rsi_hw_interface/rsi_command.h>
+#include <kuka_rsi_hw_interface/rsi_state.h>
 
-namespace kuka_rsi_hw_interface
-{
+namespace kuka_rsi_hw_interface {
 
 static const double RAD2DEG = 57.295779513082323;
 static const double DEG2RAD = 0.017453292519943295;
 
-class KukaHardwareInterface : public hardware_interface::RobotHW
-{
+class KukaHardwareInterface : public hardware_interface::RobotHW {
 
 private:
-
   // ROS node handle
   ros::NodeHandle nh_;
 
@@ -98,7 +94,8 @@ private:
   std::vector<double> rsi_joint_position_corrections_;
   unsigned long long ipoc_;
 
-  std::unique_ptr<realtime_tools::RealtimePublisher<std_msgs::String> > rt_rsi_pub_;
+  std::unique_ptr<realtime_tools::RealtimePublisher<std_msgs::String>>
+      rt_rsi_pub_;
 
   std::unique_ptr<UDPServer> server_;
   std::string local_host_;
@@ -118,7 +115,6 @@ private:
   hardware_interface::PositionJointInterface position_joint_interface_;
 
 public:
-
   KukaHardwareInterface();
   ~KukaHardwareInterface();
 
@@ -126,7 +122,6 @@ public:
   void configure();
   bool read(const ros::Time time, const ros::Duration period);
   bool write(const ros::Time time, const ros::Duration period);
-
 };
 
 } // namespace kuka_rsi_hw_interface

@@ -35,8 +35,7 @@
 
 #include <kuka_eki_hw_interface/kuka_eki_hw_interface.h>
 
-int main(int argc, char** argv)
-{
+int main(int argc, char **argv) {
   ros::init(argc, argv, "kuka_eki_hw_interface");
 
   ros::AsyncSpinner spinner(2);
@@ -53,25 +52,29 @@ int main(int argc, char** argv)
   auto stopwatch_last = std::chrono::steady_clock::now();
   auto stopwatch_now = stopwatch_last;
 
-  controller_manager::ControllerManager controller_manager(&hardware_interface, nh);
+  controller_manager::ControllerManager controller_manager(&hardware_interface,
+                                                           nh);
 
   hardware_interface.start();
 
   // Get current time and elapsed time since last read
   timestamp = ros::Time::now();
   stopwatch_now = std::chrono::steady_clock::now();
-  period.fromSec(std::chrono::duration_cast<std::chrono::duration<double>>(stopwatch_now - stopwatch_last).count());
+  period.fromSec(std::chrono::duration_cast<std::chrono::duration<double>>(
+                     stopwatch_now - stopwatch_last)
+                     .count());
   stopwatch_last = stopwatch_now;
 
-  while (ros::ok())
-  {
+  while (ros::ok()) {
     // Receive current state from robot
     hardware_interface.read(timestamp, period);
 
     // Get current time and elapsed time since last read
     timestamp = ros::Time::now();
     stopwatch_now = std::chrono::steady_clock::now();
-    period.fromSec(std::chrono::duration_cast<std::chrono::duration<double>>(stopwatch_now - stopwatch_last).count());
+    period.fromSec(std::chrono::duration_cast<std::chrono::duration<double>>(
+                       stopwatch_now - stopwatch_last)
+                       .count());
     stopwatch_last = stopwatch_now;
 
     // Update the controllers

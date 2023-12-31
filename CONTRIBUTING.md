@@ -4,13 +4,15 @@ ROS-Industrial is a community project. We welcome contributions from any source,
 2. The second step (item 2) is to implement your change. If you are working on a code contribution, we highly recommend you utilize the [ROS Qt-Creator Plug-in](http://rosindustrial.org/news/2016/6/9/ros-qt-ide-plugin). Verify that your change successfully builds and passes all tests.
 3. Next, push your changes to a "feature" branch in your personal fork of the repo and issue a pull request (PR)(item 3). The PR allows maintainers to review the submitted code. Before the PR can be accepted, the maintainer and contributor must agree that the contribution is implemented appropriately. This process can take several back-and-forth steps (see [example](https://github.com/ros-industrial/motoman/pull/89)). Contributors should expect to spend as much time reviewing/changing the code as on the initial implementation. This time can be minimized by communicating with the ROS-Industrial community before any contribution is made.
 4. Issuing a Pull Request (PR) triggers the [Travis Continuous Integrations (CI)](https://github.com/ros-industrial/industrial_ci) step (item 4) which happens automatically in the background. The Travis CI performs several operations, and if any of the steps below fail, then the PR is marked accordingly for the maintainer.
-  * Travis Workflow:
-    * Installs a barebones ROS distribution on a fresh Ubuntu virtual machine.
-    * Creates a catkin workspace and puts the repository in it.
-    * Uses wstool to check out any from-source dependencies (i.e. other repositories).
-    * Resolves package dependencies using rosdep (i.e. install packages using apt-get).
-    * Compiles the catkin workspace.
-    * Runs all available unit tests.
+
+- Travis Workflow:
+  - Installs a barebones ROS distribution on a fresh Ubuntu virtual machine.
+  - Creates a catkin workspace and puts the repository in it.
+  - Uses wstool to check out any from-source dependencies (i.e. other repositories).
+  - Resolves package dependencies using rosdep (i.e. install packages using apt-get).
+  - Compiles the catkin workspace.
+  - Runs all available unit tests.
+
 5. If the PR passes Travis CI and one of the maintainers is satisfied with the changes, they post a +1 as a comment on the PR (item 5). The +1 signifies that the PR is ready to be merged. All PRs require at least one +1 and pass Travis CI before it can be merged.
 6. The next step (item 6) is for the PR to be merged into the main branch. This is done through the GitHub web interface by selecting the “Merge pull request” button. After the PR is merged, all status badges are updated automatically.
 7. Periodically, the maintainer will release the package (item 7), which then gets sent to the [ROS Build Farm](http://wiki.ros.org/build.ros.org) for Debian creation.

@@ -31,27 +31,23 @@
 
 // Author: Brett Hemes (3M) <brhemes@mmm.com>
 
-
 #ifndef KUKA_EKI_HW_INTERFACE
 #define KUKA_EKI_HW_INTERFACE
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <boost/asio.hpp>
 
-#include <ros/ros.h>
 #include <controller_manager/controller_manager.h>
 #include <hardware_interface/joint_command_interface.h>
 #include <hardware_interface/joint_state_interface.h>
 #include <hardware_interface/robot_hw.h>
+#include <ros/ros.h>
 
+namespace kuka_eki_hw_interface {
 
-namespace kuka_eki_hw_interface
-{
-
-class KukaEkiHardwareInterface : public hardware_interface::RobotHW
-{
+class KukaEkiHardwareInterface : public hardware_interface::RobotHW {
 private:
   ros::NodeHandle nh_;
 
@@ -66,7 +62,8 @@ private:
   std::string eki_server_address_;
   std::string eki_server_port_;
   int eki_cmd_buff_len_;
-  int eki_max_cmd_buff_len_ = 5;  // by default, limit command buffer to 5 (size of advance run in KRL)
+  int eki_max_cmd_buff_len_ =
+      5; // by default, limit command buffer to 5 (size of advance run in KRL)
 
   // Timing
   ros::Duration control_period_;
@@ -78,20 +75,22 @@ private:
   hardware_interface::PositionJointInterface position_joint_interface_;
 
   // EKI socket read/write
-  int eki_read_state_timeout_ = 5;  // [s]; settable by parameter (default = 5)
+  int eki_read_state_timeout_ = 5; // [s]; settable by parameter (default = 5)
   boost::asio::io_service ios_;
   boost::asio::deadline_timer deadline_;
   boost::asio::ip::udp::endpoint eki_server_endpoint_;
   boost::asio::ip::udp::socket eki_server_socket_;
   void eki_check_read_state_deadline();
-  static void eki_handle_receive(const boost::system::error_code &ec, size_t length,
-                                 boost::system::error_code* out_ec, size_t* out_length);
-  bool eki_read_state(std::vector<double> &joint_position, std::vector<double> &joint_velocity,
+  static void eki_handle_receive(const boost::system::error_code &ec,
+                                 size_t length,
+                                 boost::system::error_code *out_ec,
+                                 size_t *out_length);
+  bool eki_read_state(std::vector<double> &joint_position,
+                      std::vector<double> &joint_velocity,
                       std::vector<double> &joint_effort, int &cmd_buff_len);
   bool eki_write_command(const std::vector<double> &joint_position);
 
 public:
-
   KukaEkiHardwareInterface();
   ~KukaEkiHardwareInterface();
 
@@ -103,4 +102,4 @@ public:
 
 } // namespace kuka_eki_hw_interface
 
-#endif  // KUKA_EKI_HW_INTERFACE
+#endif // KUKA_EKI_HW_INTERFACE
